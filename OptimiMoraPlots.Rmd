@@ -1,0 +1,388 @@
+
+---
+title: "Ranking of optimized robots"
+output: html_document
+---
+
+Version: 1.0
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE}
+##This code takes files from the optimoraR optimization and rank them by best results.
+
+library(dplyr)
+library(ggplot2)
+library(plotly)
+library(Stocks)
+library(data.table)
+
+library(splitstackshape)
+#
+library(tidyr)
+library(knitr)
+library(ggpubr)
+PerCorrection=0.15
+
+FilePath=dirname(rstudioapi::getSourceEditorContext()$path)
+FilesPriorBot=  data.frame(FileName=list.files(paste0(FilePath,"/")))
+FilesPriorBot=data.frame(FileName=FilesPriorBot[grep("csv", x = FilesPriorBot$FileName),])
+
+
+Optimizations=data.frame()
+for (FileIinBot in FilesPriorBot$FileName){
+  OptimizationName=FileIinBot
+  BotName=sub(".csv", "", FileIinBot)
+  ResultOptimizationI= read.csv(paste0(FilePath,"/",FileIinBot)) 
+  ResultOptimizationI$BotName=BotName
+  Optimizations=rbind(Optimizations,ResultOptimizationI)
+}
+
+Optimizations$X=NULL
+Optimizations=Optimizations %>%  filter(ProfitPerDay  > 0)
+
+#Max per day
+Max= Optimizations %>% group_by(Ticker) %>% summarize(Max = max(ProfitPerDay ))
+DailyYield=round(sum(Max$Max),1)
+DailyYieldAsPercent=round((DailyYield*100)/30000, 2)
+Pairs=unique(Optimizations$Ticker)
+
+for (TickerI in Pairs){
+    DataTickerI=Optimizations %>% filter(Ticker ==TickerI)
+    DataTickerI=DataTickerI[order(DataTickerI$ProfitPerDay , decreasing = TRUE), ] 
+    Rank=1:nrow(DataTickerI)
+    DataTickerI=cbind(Rank,DataTickerI)
+    DataTickerI=DataTickerI %>% mutate_if(is.numeric, round, digits=0)
+    DataTickerI$ParNames=gsub("/", "<br>", DataTickerI$ParNames)
+    DataTickerI$ParValues=gsub("/", "<br>", DataTickerI$ParValues)
+    #do bar plot
+Opti=ggplot(DataTickerI, aes(x=Rank, y=ProfitPerDay ,  fill = BotName)) +
+     geom_col(position = position_dodge())+
+     geom_hline(yintercept=100, linetype="dashed", color = "red",size=0.5)+
+     theme_gray()+ 
+     theme(legend.title = element_blank())
+
+   assign(TickerI,ggplotly(Opti, tooltip ="Rank"))
+  TableName=paste0("Data_", TickerI)
+    assign(TableName,DataTickerI)
+}
+
+#Plots for corrections
+Data=read.csv("D:/Scrips/Trading/ForexPairs2Yrs.csv")
+Data=cbind(ID=1:nrow(Data),Data)
+
+Data=Data %>% filter(TF =="1 min")
+
+
+
+TickersOpt=unique(Data$TickerNam)
+
+for (TickerI in TickersOpt){
+  DataTickerI=Data %>% filter(TickerNam ==TickerI)
+  
+  Freq.2=ZigZag_Frequency.Swings(DataTickerI$c,change=PerCorrection)
+  Feq2=data.frame(Impulse =lag(Freq.2),Correction=Freq.2)
+  Feq2=Feq2 %>% filter(Impulse  >=0)
+
+  HexName=paste0("Hex_", TickerI)
+  GGPLOT=ggplot(Feq2, aes(x = Impulse , y = Correction )) + geom_hex(show.legend=FALSE ) 
+  assign(HexName,ggplotly(GGPLOT))
+}
+
+    
+```
+
+$$\\[.0005in]$$
+ <font size="25"> **$ `r DailyYield` per day** </font>   <font size="3">  (`r DailyYieldAsPercent` percent per day) </font>  
+ 
+
+
+
+$$\\[.0005in]$$
+
+Bots are optimized by having the largest number of successful entries while meeting as criteria that DD does not exceed the desired DD (%20) and the entry capital not larger than 10% nor smaller than $1,000 (The smallest amount possible).
+
+
+Optimized with $30,000 capital, 10% of capital per entry and 20% desired DD.
+
+Density plots show for maximum price impulse (Price increase or decreases) for a correction larger than `r PerCorrection` percent. In other words, what has been the maximum price decline in the last 2 years for an expected correction of `r PerCorrection` percent.
+
+$$\\[.0005in]$$
+
+
+
+
+# AUDUSD
+
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =10}
+subplot(Hex_AUDUSD,AUDUSD, titleY = TRUE,   titleX = TRUE, margin = 0.05, which_layout=2)
+
+```
+
+    
+  
+
+<details>
+  <summary>Parameters</summary>
+```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_AUDUSD)
+```
+</details> 
+
+
+
+$$\\[.0005in]$$
+
+
+# EURGBP
+
+
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =10}
+subplot(Hex_EURGBP,EURGBP, titleY = TRUE, titleX = TRUE, margin = 0.05, which_layout=2)
+
+```
+
+    
+  
+
+<details>
+  <summary>Parameters</summary>
+```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_EURGBP)
+```
+</details> 
+
+   
+$$\\[.0005in]$$    
+
+
+# EURJPY
+
+
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =10}
+subplot(Hex_EURJPY,EURJPY, titleY = TRUE, titleX = TRUE, margin = 0.05, which_layout=2)
+
+```
+
+    
+  
+
+<details>
+  <summary>Parameters</summary>
+```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_EURJPY)
+```
+</details> 
+
+    
+    
+   
+$$\\[.0005in]$$
+
+
+
+
+# EURUSD
+
+
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =10}
+subplot(Hex_EURUSD,EURUSD, titleY = TRUE, titleX = TRUE, margin = 0.05, which_layout=2)
+
+```
+
+    
+  
+
+<details>
+  <summary>Parameters</summary>
+```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_EURUSD)
+```
+</details> 
+
+
+
+   
+$$\\[.0005in]$$
+
+
+# GBPJPY
+
+
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =10}
+subplot(Hex_GBPJPY,GBPJPY, titleY = TRUE, titleX = TRUE, margin = 0.05, which_layout=2)
+
+```
+
+    
+  
+
+<details>
+  <summary>Parameters</summary>
+```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_GBPJPY)
+```
+</details> 
+
+
+   
+$$\\[.0005in]$$
+
+
+
+# GBPUSD
+
+
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =10}
+subplot( Hex_GBPUSD,GBPUSD,titleY = TRUE, titleX = TRUE, margin = 0.05, which_layout=2)
+
+```
+
+    
+  
+
+<details>
+  <summary>Parameters</summary>
+```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_GBPUSD)
+```
+</details> 
+
+
+   
+$$\\[.0005in]$$
+
+
+
+# NZDUSD
+
+
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center' , fig.width =10}
+subplot(Hex_NZDUSD,NZDUSD, titleY = TRUE, titleX = TRUE, margin = 0.05, which_layout=2)
+
+```
+
+    
+  
+
+<details>
+  <summary>Parameters</summary>
+```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_NZDUSD)
+```
+</details> 
+
+
+   
+$$\\[.0005in]$$
+
+
+
+# USDCAD
+
+
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =10}
+subplot(Hex_USDCAD,USDCAD, titleY = TRUE, titleX = TRUE, margin = 0.05, which_layout=2)
+
+```
+
+    
+  
+
+<details>
+  <summary>Parameters</summary>
+```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_USDCAD)
+```
+</details> 
+
+
+   
+$$\\[.0005in]$$
+
+
+# USDCHF
+
+
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =10}
+subplot(Hex_USDCHF,USDCHF, titleY = TRUE, titleX = TRUE, margin = 0.05, which_layout=2)
+
+```
+
+    
+  
+
+<details>
+  <summary>Parameters</summary>
+```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_USDCHF)
+```
+</details> 
+
+
+
+   
+$$\\[.0005in]$$
+
+
+
+# USDJPY
+
+
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =10}
+subplot(Hex_USDJPY,USDJPY, titleY = TRUE, titleX = TRUE, margin = 0.05, which_layout=2)
+
+```
+
+    
+  
+
+<details>
+  <summary>Parameters</summary>
+```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_USDJPY)
+```
+</details> 
+
+
+   
+$$\\[.0005in]$$
+
+
+# XAUUSD
+
+
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =10}
+subplot( Hex_XAUUSD,XAUUSD,titleY = TRUE, titleX = TRUE, margin = 0.05,  which_layout=2)
+
+```
+
+    
+  
+
+<details>
+  <summary>Parameters</summary>
+```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_XAUUSD)
+```
+</details> 
