@@ -32,7 +32,7 @@ library(knitr)
 library(ggpubr)
 library(dygraphs)
 
-TickerI="AUDUSD"
+TickerI="GBPUSD"
 PerCorrection= c(0.1, 0.15, 0.2, 0.25, 0.5)
 CriticalSwing=3 # percent change used to identify critical extensions
 
@@ -46,7 +46,7 @@ Data=Data %>% filter(TF =="1 min")
 #TickersOpt=sort(unique(Data$TickerNam))
 
 #Tickers
-#"AUDUSD" "EURAUD" "EURCAD" "EURCHF" "EURGBP" "EURJPY" "EURNZD" "EURUSD" "GBPAUD" "GBPCAD" "GBPCHF" "GBPJPY" "GBPNZD" "GBPUSD" "NZDUSD" "USDCAD" "USDCHF" "USDJPY" "XAUUSD"
+#"GBPUSD" "EURAUD" "EURCAD" "EURCHF" "EURGBP" "EURJPY" "EURNZD" "EURUSD" "GBPAUD" "GBPCAD" "GBPCHF" "GBPJPY" "GBPNZD" "GBPUSD" "NZDUSD" "USDCAD" "USDCHF" "USDJPY" "XAUUSD"
 
  
 
@@ -140,12 +140,12 @@ These plots show the minimum price correction at given price extensions... this 
 
 
 
-# AUDUSD
+# GBPUSD
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =18, fig.height = 4}
 
 
-subplot(AUDUSD_1,AUDUSD_2,AUDUSD_3,AUDUSD_4,AUDUSD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(GBPUSD_1,GBPUSD_2,GBPUSD_3,GBPUSD_4,GBPUSD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 
 
 ```
