@@ -46,7 +46,7 @@ Data=Data %>% filter(TF =="1 min")
 #TickersOpt=sort(unique(Data$TickerNam))
 
 #Tickers
-#"GBPAUD" "EURAUD" "EURCAD" "EURCHF" "EURGBP" "EURJPY" "EURNZD" "EURUSD" "GBPAUD" "GBPCAD" "GBPCHF" "GBPJPY" "GBPNZD" "GBPUSD" "NZDUSD" "USDCAD" "USDCHF" "USDJPY" "XAUUSD"
+#"USDCHF" "EURAUD" "EURCAD" "EURCHF" "EURGBP" "EURJPY" "EURNZD" "EURUSD" "GBPAUD" "GBPCAD" "GBPCHF" "GBPJPY" "GBPNZD" "GBPUSD" "NZDUSD" "USDCAD" "USDCHF" "USDJPY" "XAUUSD"
 
  
 
@@ -115,13 +115,17 @@ Data=Data %>% filter(TF =="1 min")
 #Do density plots
 StockIData=Results %>% filter(TickerNam ==TickerI)
 
-xLim=range(StockIData$Impulse)
-yLim=range(StockIData$Correction)
+
+xLim=max(StockIData$Impulse)
+yLim=min(StockIData$Correction)
+
+if(xLim<=CriticalSwing){xLim=c(0,xLim+0.5)} else {xLim=c(0,CriticalSwing+0.5)}
+if(yLim<=-CriticalSwing){yLim=c(yLim-0.5,0)} else {yLim=c(-CriticalSwing-0.5,0)}
 
 for (I in 1:length(PerCorrection)){
   GGPLOT=ggplot((StockIData %>% filter(MinCorrection  ==PerCorrection[I])), aes(x = Impulse , y = Correction )) + geom_hex(show.legend=FALSE ) +  xlim(xLim) + ylim(yLim)+labs(x=PerCorrection[I]) +
     theme(axis.title.x = element_text(vjust = 2)) + geom_hline(yintercept=-CriticalSwing, linetype="dashed", color = "red",size=0.5)+ geom_vline(xintercept=CriticalSwing, linetype="dashed", color = "red",size=0.5)
-  Name=paste0(TickerI,"_",I)
+  Name=paste0("Plot_",I)
   assign(Name,ggplotly(GGPLOT))
 }
 
@@ -140,12 +144,12 @@ These plots show the minimum price correction at given price extensions... this 
 
 
 
-# GBPAUD
+# `r TickerI`
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =18, fig.height = 4}
 
 
-subplot(GBPAUD_1,GBPAUD_2,GBPAUD_3,GBPAUD_4,GBPAUD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(Plot_1,Plot_2,Plot_3,Plot_4,Plot_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 
 
 ```
@@ -201,5 +205,4 @@ knitr::kable(CritZigZags)
 [USDJPY](https://camilo-mora.github.io/OptiMoraR/22_USDJPY.html) 
 [XAUUSD](https://camilo-mora.github.io/OptiMoraR/23_XAUUSD.html) 
 [ALL](https://camilo-mora.github.io/OptiMoraR/24_ALL.html) 
-
     
