@@ -69,8 +69,12 @@ for (Ticker in TickersOpt){
 
 StockIData=Results %>% filter(TickerNam ==Ticker)
 
-xLim=range(StockIData$Impulse)
-yLim=range(StockIData$Correction)
+
+xLim=max(StockIData$Impulse)
+yLim=min(StockIData$Correction)
+
+if( xLim > CriticalSwing) {xLim= c(0, xLim +0.5)} else {xLim= c(0, CriticalSwing +0.5)}
+if( yLim < -CriticalSwing) {yLim= c( yLim -0.5, 0)} else {yLim= c( -CriticalSwing -0.5, 0)}
 
 for (I in 1:length(PerCorrection)){
   GGPLOT=ggplot((StockIData %>% filter(MinCorrection  ==PerCorrection[I])), aes(x = Impulse , y = Correction )) + geom_hex(show.legend=FALSE ) +  xlim(xLim) + ylim(yLim)+labs(x=PerCorrection[I]) +
@@ -104,6 +108,17 @@ subplot(AUDCAD_1,AUDCAD_2,AUDCAD_3,AUDCAD_4,AUDCAD_5,titleY = FALSE,   titleX = 
     
 $$\\[.0009in]$$  
 
+# AUDCHF
+
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(AUDCHF_1,AUDCHF_2,AUDCHF_3,AUDCHF_4,AUDCHF_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$  
+
+
 # AUDJPY
 
 
@@ -135,6 +150,16 @@ subplot(AUDUSD_1,AUDUSD_2,AUDUSD_3,AUDUSD_4,AUDUSD_5,titleY = FALSE,   titleX = 
     
 $$\\[.0009in]$$    
 
+
+# CADCHF
+
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(CADCHF_1,CADCHF_2,CADCHF_3,CADCHF_4,CADCHF_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$  
 
 
 # CHFJPY
@@ -277,6 +302,24 @@ subplot(GBPUSD_1,GBPUSD_2,GBPUSD_3,GBPUSD_4,GBPUSD_5,titleY = FALSE,   titleX = 
     
 $$\\[.0009in]$$    
 
+
+# NZDCAD 
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(NZDCAD_1,NZDCAD_2,NZDCAD_3,NZDCAD_4,NZDCAD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$  
+
+# NZDCHF 
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(NZDCHF_1,NZDCHF_2,NZDCHF_3,NZDCHF_4,NZDCHF_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$  
 
 # NZDUSD 
 
