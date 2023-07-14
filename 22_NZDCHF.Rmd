@@ -32,7 +32,7 @@ library(knitr)
 library(ggpubr)
 library(dygraphs)
 
-TickerI="AUDCAD"
+TickerI="NZDCHF"
 PerCorrection= c(0.1, 0.15, 0.2, 0.25, 0.5)
 CriticalSwing=3 # percent change used to identify critical extensions
 
