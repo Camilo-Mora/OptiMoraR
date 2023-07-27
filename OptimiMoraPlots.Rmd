@@ -25,7 +25,7 @@ PerCorrection=0.15
 FilePath=dirname(rstudioapi::getSourceEditorContext()$path)
 FilesPriorBot=  data.frame(FileName=list.files(paste0(FilePath,"/")))
 FilesPriorBot=data.frame(FileName=FilesPriorBot[grep("csv", x = FilesPriorBot$FileName),])
-
+FilesPriorBot=data.frame(FileName=FilesPriorBot[grep("Bot_", x = FilesPriorBot$FileName),])
 
 Optimizations=data.frame()
 for (FileIinBot in FilesPriorBot$FileName){
@@ -60,32 +60,11 @@ Opti=ggplot(DataTickerI, aes(x=Rank, y=ProfitPerDay ,  fill = BotName)) +
      theme_gray()+ 
      theme(legend.title = element_blank())
 
-   assign(TickerI,ggplotly(Opti, tooltip ="Rank"))
+   assign(TickerI,ggplotly(Opti, tooltip = c("Rank", "ProfitPerDay")))
   TableName=paste0("Data_", TickerI)
     assign(TableName,DataTickerI)
 }
 
-#Plots for corrections
-Data=read.csv("D:/Scrips/Trading/ForexPairs2Yrs.csv")
-Data=cbind(ID=1:nrow(Data),Data)
-
-Data=Data %>% filter(TF =="1 min")
-
-
-
-TickersOpt=unique(Data$TickerNam)
-
-for (TickerI in TickersOpt){
-  DataTickerI=Data %>% filter(TickerNam ==TickerI)
-  
-  Freq.2=ZigZag_Frequency.Swings(DataTickerI$c,change=PerCorrection)
-  Feq2=data.frame(Impulse =lag(Freq.2),Correction=Freq.2)
-  Feq2=Feq2 %>% filter(Impulse  >=0)
-
-  HexName=paste0("Hex_", TickerI)
-  GGPLOT=ggplot(Feq2, aes(x = Impulse , y = Correction )) + geom_hex(show.legend=FALSE ) 
-  assign(HexName,ggplotly(GGPLOT))
-}
 
     
 ```
@@ -110,11 +89,11 @@ $$\\[.0005in]$$
 
 
 
-# AUDUSD
+# AUDCAD
 
 
-```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =10}
-subplot(Hex_AUDUSD,AUDUSD, titleY = TRUE,   titleX = TRUE, margin = 0.05, which_layout=2)
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+AUDCAD
 
 ```
 
@@ -131,258 +110,686 @@ knitr::kable(Data_AUDUSD)
 
 
 
+
+
 $$\\[.0005in]$$
-
-
-# EURGBP
-
-
-
-```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =10}
-subplot(Hex_EURGBP,EURGBP, titleY = TRUE, titleX = TRUE, margin = 0.05, which_layout=2)
+  
+  
+  # AUDCHF
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+AUDCHF
 
 ```
 
-    
-  
+
+
 
 <details>
   <summary>Parameters</summary>
-```{r, echo=FALSE, eval=TRUE}
+  ```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_AUDCHF)
+```
+</details> 
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # AUDJPY
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+AUDJPY
+
+```
+
+
+
+
+<details>
+  <summary>Parameters</summary>
+  ```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_AUDJPY)
+```
+</details> 
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # AUDNZD
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+AUDNZD
+
+```
+
+
+
+
+<details>
+  <summary>Parameters</summary>
+  ```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_AUDNZD)
+```
+</details> 
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # AUDUSD
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+AUDUSD
+
+```
+
+
+
+
+<details>
+  <summary>Parameters</summary>
+  ```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_AUDUSD)
+```
+</details> 
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # CADCHF
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+CADCHF
+
+```
+
+
+
+
+<details>
+  <summary>Parameters</summary>
+  ```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_CADCHF)
+```
+</details> 
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # CHFJPY
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+CHFJPY
+
+```
+
+
+
+
+<details>
+  <summary>Parameters</summary>
+  ```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_CHFJPY)
+```
+</details> 
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # EURAUD
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+EURAUD
+
+```
+
+
+
+
+<details>
+  <summary>Parameters</summary>
+  ```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_EURAUD)
+```
+</details> 
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # EURCAD
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+EURCAD
+
+```
+
+
+
+
+<details>
+  <summary>Parameters</summary>
+  ```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_EURCAD)
+```
+</details> 
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # EURCHF
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+EURCHF
+
+```
+
+
+
+
+<details>
+  <summary>Parameters</summary>
+  ```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_EURCHF)
+```
+</details> 
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # EURGBP
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+EURGBP
+
+```
+
+
+
+
+<details>
+  <summary>Parameters</summary>
+  ```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_EURGBP)
 ```
 </details> 
-
-   
-$$\\[.0005in]$$    
-
-
-# EURJPY
-
-
-
-```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =10}
-subplot(Hex_EURJPY,EURJPY, titleY = TRUE, titleX = TRUE, margin = 0.05, which_layout=2)
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # EURJPY
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+EURJPY
 
 ```
 
-    
-  
+
+
 
 <details>
   <summary>Parameters</summary>
-```{r, echo=FALSE, eval=TRUE}
+  ```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_EURJPY)
 ```
 </details> 
-
-    
-    
-   
-$$\\[.0005in]$$
-
-
-
-
-# EURUSD
-
-
-
-```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =10}
-subplot(Hex_EURUSD,EURUSD, titleY = TRUE, titleX = TRUE, margin = 0.05, which_layout=2)
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # EURNZD
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+EURNZD
 
 ```
 
-    
-  
+
+
 
 <details>
   <summary>Parameters</summary>
-```{r, echo=FALSE, eval=TRUE}
+  ```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_EURNZD)
+```
+</details> 
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # EURUSD
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+EURUSD
+
+```
+
+
+
+
+<details>
+  <summary>Parameters</summary>
+  ```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_EURUSD)
 ```
 </details> 
-
-
-
-   
-$$\\[.0005in]$$
-
-
-# GBPJPY
-
-
-
-```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =10}
-subplot(Hex_GBPJPY,GBPJPY, titleY = TRUE, titleX = TRUE, margin = 0.05, which_layout=2)
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # GBPAUD
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+GBPAUD
 
 ```
 
-    
-  
+
+
 
 <details>
   <summary>Parameters</summary>
-```{r, echo=FALSE, eval=TRUE}
+  ```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_GBPAUD)
+```
+</details> 
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # GBPCAD
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+GBPCAD
+
+```
+
+
+
+
+<details>
+  <summary>Parameters</summary>
+  ```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_GBPCAD)
+```
+</details> 
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # GBPCHF
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+GBPCHF
+
+```
+
+
+
+
+<details>
+  <summary>Parameters</summary>
+  ```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_GBPCHF)
+```
+</details> 
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # GBPJPY
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+GBPJPY
+
+```
+
+
+
+
+<details>
+  <summary>Parameters</summary>
+  ```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_GBPJPY)
 ```
 </details> 
-
-
-   
-$$\\[.0005in]$$
-
-
-
-# GBPUSD
-
-
-
-```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =10}
-subplot( Hex_GBPUSD,GBPUSD,titleY = TRUE, titleX = TRUE, margin = 0.05, which_layout=2)
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # GBPNZD
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+GBPNZD
 
 ```
 
-    
-  
+
+
 
 <details>
   <summary>Parameters</summary>
-```{r, echo=FALSE, eval=TRUE}
+  ```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_GBPNZD)
+```
+</details> 
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # GBPUSD
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+GBPUSD
+
+```
+
+
+
+
+<details>
+  <summary>Parameters</summary>
+  ```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_GBPUSD)
 ```
 </details> 
-
-
-   
-$$\\[.0005in]$$
-
-
-
-# NZDUSD
-
-
-
-```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center' , fig.width =10}
-subplot(Hex_NZDUSD,NZDUSD, titleY = TRUE, titleX = TRUE, margin = 0.05, which_layout=2)
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # NZDCAD
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+NZDCAD
 
 ```
 
-    
-  
+
+
 
 <details>
   <summary>Parameters</summary>
-```{r, echo=FALSE, eval=TRUE}
+  ```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_NZDCAD)
+```
+</details> 
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # NZDCHF
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+NZDCHF
+
+```
+
+
+
+
+<details>
+  <summary>Parameters</summary>
+  ```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Data_NZDCHF)
+```
+</details> 
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # NZDUSD
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+NZDUSD
+
+```
+
+
+
+
+<details>
+  <summary>Parameters</summary>
+  ```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_NZDUSD)
 ```
 </details> 
-
-
-   
-$$\\[.0005in]$$
-
-
-
-# USDCAD
-
-
-
-```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =10}
-subplot(Hex_USDCAD,USDCAD, titleY = TRUE, titleX = TRUE, margin = 0.05, which_layout=2)
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # USDCAD
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+USDCAD
 
 ```
 
-    
-  
+
+
 
 <details>
   <summary>Parameters</summary>
-```{r, echo=FALSE, eval=TRUE}
+  ```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_USDCAD)
 ```
 </details> 
-
-
-   
-$$\\[.0005in]$$
-
-
-# USDCHF
-
-
-
-```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =10}
-subplot(Hex_USDCHF,USDCHF, titleY = TRUE, titleX = TRUE, margin = 0.05, which_layout=2)
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # USDCHF
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+USDCHF
 
 ```
 
-    
-  
+
+
 
 <details>
   <summary>Parameters</summary>
-```{r, echo=FALSE, eval=TRUE}
+  ```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_USDCHF)
 ```
 </details> 
-
-
-
-   
-$$\\[.0005in]$$
-
-
-
-# USDJPY
-
-
-
-```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =10}
-subplot(Hex_USDJPY,USDJPY, titleY = TRUE, titleX = TRUE, margin = 0.05, which_layout=2)
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # USDJPY
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+USDJPY
 
 ```
 
-    
-  
+
+
 
 <details>
   <summary>Parameters</summary>
-```{r, echo=FALSE, eval=TRUE}
+  ```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_USDJPY)
 ```
 </details> 
-
-
-   
-$$\\[.0005in]$$
-
-
-# XAUUSD
-
-
-
-```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =10}
-subplot( Hex_XAUUSD,XAUUSD,titleY = TRUE, titleX = TRUE, margin = 0.05,  which_layout=2)
+  
+  
+  
+  $$\\[.0005in]$$
+  
+  
+  
+  # XAUUSD
+  
+  
+  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+XAUUSD
 
 ```
 
-    
-  
+
+
 
 <details>
   <summary>Parameters</summary>
-```{r, echo=FALSE, eval=TRUE}
+  ```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_XAUUSD)
 ```
 </details> 
+  
+  
+  
+  $$\\[.0005in]$$
+
+
+
+[AUDCAD](https://camilo-mora.github.io/OptiMoraR/01_AUDCAD.html) 
+[AUDCHF](https://camilo-mora.github.io/OptiMoraR/02_AUDCHF.html)
+[AUDJPY](https://camilo-mora.github.io/OptiMoraR/03_AUDJPY.html)
+[AUDNZD](https://camilo-mora.github.io/OptiMoraR/04_AUDNZD.html) 
+[AUDUSD](https://camilo-mora.github.io/OptiMoraR/05_AUDUSD.html) 
+[CADCHF](https://camilo-mora.github.io/OptiMoraR/06_CADCHF.html) 
+[CHFJPY](https://camilo-mora.github.io/OptiMoraR/07_CHFJPY.html) 
+[EURAUD](https://camilo-mora.github.io/OptiMoraR/08_EURAUD.html) 
+[EURCAD](https://camilo-mora.github.io/OptiMoraR/09_EURCAD.html) 
+[EURCHF](https://camilo-mora.github.io/OptiMoraR/10_EURCHF.html) 
+[EURGBP](https://camilo-mora.github.io/OptiMoraR/11_EURGBP.html) 
+[EURJPY](https://camilo-mora.github.io/OptiMoraR/12_EURJPY.html) 
+[EURNZD](https://camilo-mora.github.io/OptiMoraR/13_EURNZD.html) 
+[EURUSD](https://camilo-mora.github.io/OptiMoraR/14_EURUSD.html) 
+[GBPAUD](https://camilo-mora.github.io/OptiMoraR/15_GBPAUD.html) 
+[GBPCAD](https://camilo-mora.github.io/OptiMoraR/16_GBPCAD.html) 
+[GBPCHF](https://camilo-mora.github.io/OptiMoraR/17_GBPCHF.html) 
+[GBPJPY](https://camilo-mora.github.io/OptiMoraR/18_GBPJPY.html) 
+[GBPNZD](https://camilo-mora.github.io/OptiMoraR/19_GBPNZD.html) 
+[GBPUSD](https://camilo-mora.github.io/OptiMoraR/20_GBPUSD.html) 
+[NZDCAD](https://camilo-mora.github.io/OptiMoraR/21_NZDCAD.html) 
+[NZDCHF](https://camilo-mora.github.io/OptiMoraR/22_NZDCHF.html) 
+[NZDUSD](https://camilo-mora.github.io/OptiMoraR/23_NZDUSD.html) 
+[USDCAD](https://camilo-mora.github.io/OptiMoraR/24_USDCAD.html) 
+[USDCHF](https://camilo-mora.github.io/OptiMoraR/25_USDCHF.html) 
+[USDJPY](https://camilo-mora.github.io/OptiMoraR/26_USDJPY.html) 
+[XAUUSD](https://camilo-mora.github.io/OptiMoraR/27_XAUUSD.html) 
+[ALL](https://camilo-mora.github.io/OptiMoraR/28_ALL.html) 
