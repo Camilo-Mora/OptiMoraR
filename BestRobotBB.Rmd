@@ -49,13 +49,13 @@ PlotSignals=PlotSignals%>%
   dySeries("Exit_UpperBB", stepPlot = FALSE, fillGraph = FALSE, color = adjustcolor( "orange", alpha.f = 0.5))%>%
   dySeries("Exit_LowerBB", stepPlot = FALSE, fillGraph = FALSE, color= adjustcolor( "orange", alpha.f = 0.5))%>%
   dySeries("c", stepPlot = FALSE, fillGraph = FALSE, color= "black")
-#data for each signal
-Longs=Signals%>% filter(Entry=="Long")
-Shorts=Signals%>% filter(Entry=="Short")
+#data for each signal...removed to make file smaller
+#Longs=Signals%>% filter(Entry=="Long")
+#Shorts=Signals%>% filter(Entry=="Short")
 #add blue vertical solid lines for every long entries.. removed for sake of reducing size of file
-   PlotSignals=PlotSignals %>% dyEvent(Longs$ID, labelLoc = "bottom",color = adjustcolor( "grey", alpha.f = 0.3), strokePattern ="solid")
+#   PlotSignals=PlotSignals %>% dyEvent(Longs$ID, labelLoc = "bottom",color = adjustcolor( "grey", alpha.f = 0.3), strokePattern ="solid")
 #add red vertical broken lines for every short entries
-  PlotSignals=PlotSignals %>% dyEvent(Shorts$ID, labelLoc = "bottom",color = adjustcolor( "grey", alpha.f = 0.3), strokePattern ="dotted")
+#  PlotSignals=PlotSignals %>% dyEvent(Shorts$ID, labelLoc = "bottom",color = adjustcolor( "grey", alpha.f = 0.3), strokePattern ="dotted")
 
 
 
