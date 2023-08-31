@@ -33,7 +33,7 @@ library(ggpubr)
 library(dygraphs)
 
 TickerI="USDCHF"
-PerCorrection= c(0.1, 0.15, 0.2, 0.25, 0.5)
+PerCorrection= c(0.05, 0.1, 0.15, 0.2, 0.25)
 CriticalSwing=3 # percent change used to identify critical extensions
 
 #news

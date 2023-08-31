@@ -1,0 +1,307 @@
+
+---
+title: "Ranking of optimized robots"
+output: html_document
+---
+
+Version: 1.0
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE}
+
+library(Hmisc)
+library(mt5R)
+library(dygraphs)
+library(htmltools)
+library(RColorBrewer)
+library(dplyr)
+library(ggplot2)
+library(plotly)
+library(Stocks)
+library(data.table)
+library(hexbin)
+library(splitstackshape)
+library(zoo)
+library(tidyr)
+library(knitr)
+library(ggpubr)
+
+
+MoneyToStart=30000
+PercBalToEnter=5 #Percent of balance use to enter
+MinDDWanted=5 #percent of account wanted to be at maximum DD for this pair. Used to highlight this critical entries, and to bypass configuation that exceed this DD, or when reducing entry volume, it is less than the broker minimum entry
+
+RUN=readRDS("C:/Users/Camilo/Documents/TestBot.RData")
+
+Signals=RUN[[1]]
+Summary=RUN[[2]]
+SeqEntries=RUN[[3]]
+EachEntry=RUN[[4]]
+
+#Merge data with signals
+
+
+#"o", "h", "l",
+PlotSignals=dygraphs::dygraph(Signals[,c("ID", "c", "Entry_UpperBB", "Entry_LowerBB", "Exit_UpperBB", "Exit_LowerBB")], group="ID", width = "1500" ,height=400)%>%   dyLegend(width = "1200") # %>% dyCandlestick()
+PlotSignals=dyAxis(PlotSignals,"x",drawGrid = FALSE)
+PlotSignals=PlotSignals%>%
+  dySeries("Entry_UpperBB", stepPlot = FALSE, fillGraph = FALSE, color = adjustcolor( "green", alpha.f = 0.5))%>%
+  dySeries("Entry_LowerBB", stepPlot = FALSE, fillGraph = FALSE, color = adjustcolor( "green", alpha.f = 0.5))%>%
+  dySeries("Exit_UpperBB", stepPlot = FALSE, fillGraph = FALSE, color = adjustcolor( "orange", alpha.f = 0.5))%>%
+  dySeries("Exit_LowerBB", stepPlot = FALSE, fillGraph = FALSE, color= adjustcolor( "orange", alpha.f = 0.5))%>%
+  dySeries("c", stepPlot = FALSE, fillGraph = FALSE, color= adjustcolor( "purple", alpha.f = 0.5), strokePattern ="dotted")
+#data for each signal
+Longs=Signals%>% filter(Entry=="Long")
+Shorts=Signals%>% filter(Entry=="Short")
+#add blue vertical solid lines for every long entries.. removed for sake of reducing size of file
+   PlotSignals=PlotSignals %>% dyEvent(Longs$ID, labelLoc = "bottom",color = adjustcolor( "grey", alpha.f = 0.3), strokePattern ="solid")
+#add red vertical broken lines for every short entries
+  PlotSignals=PlotSignals %>% dyEvent(Shorts$ID, labelLoc = "bottom",color = adjustcolor( "grey", alpha.f = 0.3), strokePattern ="dotted")
+
+
+
+
+
+SeqEntries$Type <- ifelse(grepl("S",SeqEntries$EntryId),'Short','Long')
+SeqShort=SeqEntries%>% filter(Type=="Short")
+SeqLong=SeqEntries%>% filter(Type=="Long")
+
+#lines for only entries in a sequence..meaning entering short, and next short when signals exceed martgale extension
+PlotSignals=PlotSignals %>% dyEvent(SeqShort$EntryRawID, c(SeqShort$EntryId), labelLoc = "bottom", strokePattern ="dotted",color =adjustcolor( "pink", alpha.f = 0.5))
+PlotSignals=PlotSignals %>% dyEvent(SeqLong$EntryRawID, c(SeqLong$EntryId), labelLoc = "bottom", strokePattern ="solid",color =adjustcolor( "lightblue", alpha.f = 0.5))
+
+
+
+#get critical hidden entries
+CrticalHiddenEntries=EachEntry %>% group_by(StartingSignalNum) %>% summarise(DD = sum(DD_Money), EntryCandle=min(EntryRawID),Type= first(EntryId ))
+CrticalHiddenEntries$Type <- ifelse(grepl("S",CrticalHiddenEntries$Type),'Short','Long')
+CrticalHiddenEntries= CrticalHiddenEntries %>% filter(abs(DD) >=(MoneyToStart* (MinDDWanted/100)))
+
+CritcShortS=CrticalHiddenEntries%>% filter(Type=="Short")
+CritcLongs=CrticalHiddenEntries%>% filter(Type=="Long")
+
+PlotSignals=PlotSignals %>% dyEvent(CritcShortS$EntryCandle,  labelLoc = "bottom", strokePattern ="solid",color ="red")
+PlotSignals=PlotSignals %>% dyEvent(CritcLongs$EntryCandle,  labelLoc = "bottom", strokePattern ="solid",color ="blue")
+
+
+
+#Plot entries in lwer plots
+Signals$Y=1
+LongEntries  = dygraphs::dygraph(Signals[,c("ID","Y")], group="ID", width = "1500",height=50)
+ShortEntries = dygraphs::dygraph(Signals[,c("ID","Y")], group="ID", width = "1500",height=50)
+
+#Loop over entries to add shading
+for (i in 1:nrow(SeqEntries)) {
+  IsLong=grepl("L", SeqEntries$EntryId[i])
+  if(IsLong==TRUE){next}
+  LongEntries <- dygraphs::dyShading( LongEntries, from  =SeqEntries$EntryRawID[i], to    = SeqEntries$ExitRawID[i], color = adjustcolor( "red", alpha.f = 0.3))
+}
+
+for (i in 1:nrow(SeqEntries)) {
+  IsShort=grepl("S", SeqEntries$EntryId[i])
+  if(IsShort==TRUE){next}
+  ShortEntries <- dygraphs::dyShading( ShortEntries, from  =SeqEntries$EntryRawID[i], to    = SeqEntries$ExitRawID[i], color = adjustcolor( "blue", alpha.f = 0.3))
+}
+
+
+dy_graph <- list(PlotSignals,LongEntries,ShortEntries)
+
+Plot=htmltools::browsable(htmltools::tagList(dy_graph))
+
+
+##########################################
+##summary of dd per entry
+SeqEntries$MoneyUsed=SeqEntries$Shares*SeqEntries$EntryPrice    
+P_DDs=SeqEntries %>% group_by(StartingSignalNum) %>% summarise(DD = sum(DD_Money), MaxExtDD=min(DD_Percent), Profit=sum(Profit_Money), EntryCandle=min(EntryRawID), MoneyUsed=sum(MoneyUsed))
+P_DDs$Index=1:nrow(P_DDs)
+P_DDs$CumProfit= floor(cumsum(P_DDs$Profit) )
+
+
+Breaks=seq(from=round(min(P_DDs$DD), digits = -2), to=0, by=100)
+
+P_DDs$DropDown=cut(P_DDs$DD, Breaks, labels =Breaks[1:(length(Breaks)-1)], right = TRUE)
+
+###---do plot adjusting for dd/profit...this is the profit and dd, after reducing the amount entries to ensure the max DD is equal to the desire DD.
+  AdjustedEntryPercent=Summary$Perc_OfBal_ToEntry
+  AdjustmentFactorForProfandDD=AdjustedEntryPercent/PercBalToEnter
+  P_DDs$AdjustedProfit=P_DDs$Profit*AdjustmentFactorForProfandDD
+  P_DDs$AdjustedDD=P_DDs$DD*AdjustmentFactorForProfandDD
+  P_DDs$AdjustedDropDown=cut(P_DDs$AdjustedDD, Breaks, labels =Breaks[1:(length(Breaks)-1)], right = TRUE)
+  AdjutstedDDs=P_DDs %>% group_by(AdjustedDropDown) %>% summarise(NumEntries = n())
+  colnames(AdjutstedDDs)=c("DropDown", "AdjustedEntryNumEntries")
+  
+DDs=P_DDs %>% group_by(DropDown) %>% summarise(NumEntries = n())
+
+DDs=merge(DDs,AdjutstedDDs, by="DropDown", all=TRUE)
+DDs$NumEntries=-DDs$NumEntries
+DDs=DDs[order(DDs$DropDown, decreasing = TRUE), ]   
+DDs$DropDown <- factor(DDs$DropDown, levels = DDs$DropDown)
+
+ymax=max(DDs$AdjustedEntryNumEntries, na.rm=TRUE)+100
+
+FrequencyDDs<-ggplot(data=DDs)+
+  geom_bar(aes(x=DropDown, y=AdjustedEntryNumEntries,  label = AdjustedEntryNumEntries) , stat="identity",fill="blue",linewidth=0.5,colour="blue")+
+  geom_bar(aes(x=DropDown, y=NumEntries,  label =NumEntries) , stat="identity",fill="red",linewidth=0.5,colour="red") +
+  scale_y_continuous(trans = scales::pseudo_log_trans())+
+
+
+  xlab("DropDown") + ylab("Raw Money entry %% Money entry adjusted to DD") +
+
+  theme(axis.text.x=element_text(angle=90))+ 
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"))+
+
+ geom_hline(yintercept=0,color ="white")
+
+DDsPlot=ggplotly(FrequencyDDs)
+
+
+  
+############################################
+###profile of dd and profit as in TV 
+P_DDs$Label=paste(P_DDs$DD, "and", P_DDs$Index)
+P_DDs$CriticalColor=ifelse((abs(P_DDs$DD)+50) >=(MoneyToStart* (MinDDWanted/100)), "red", "pink")
+P_DDs$DD=round(P_DDs$DD,1)
+P_DDs$Profit=round(P_DDs$Profit,2)
+P_DDs$AdjCumProfit= floor(cumsum(P_DDs$AdjustedProfit) )
+  
+ProfitDDPlot=ggplot(data=P_DDs,aes(x=Index )) +
+  geom_segment(aes(x = Index, xend = Index, y = 0, yend = DD,  label = StartingSignalNum), colour = P_DDs$CriticalColor, linewidth = 1) +
+  geom_segment(aes(x = Index, xend = Index, y = 0, yend = Profit,  label = StartingSignalNum), colour = "blue", linewidth = 1) +
+  geom_line( aes(y= CumProfit, EntryMoneyAdjusted="No"), size=1, color="red",linewidth=1) +
+  geom_line( aes(y= AdjCumProfit, EntryMoneyAdjusted="Yes"), size=1, color=rgb(0.2, 0.6, 0.9, 1),linewidth=1) +
+  theme_bw()+
+  xlab("Entry number") + ylab(paste0("DropDown (USD; criticals at ", MinDDWanted, "% in red); Balance (USD)"))
+  
+
+
+DDProfitProfile=ggplotly(ProfitDDPlot)
+
+
+
+#plot about compunt interest plot
+P_DDs$ConpuntPercProfitAdjusted=NA
+P_DDs=data.frame(P_DDs)
+P_DDs$PercProt=(P_DDs$Profit/MoneyToStart*100)
+P_DDs$PercProtAdjus=(P_DDs$AdjustedProfit/MoneyToStart*100)
+
+EntryMoneyI=MoneyToStart
+EntryMoneyIAdjusted=MoneyToStart
+for (i in 1:nrow(P_DDs)){
+  ProfitI=EntryMoneyI*(P_DDs$PercProt[i]/100)
+  ProfitIAdjusted=EntryMoneyIAdjusted*(P_DDs$PercProtAdjus[i]/100)
+  P_DDs$ConpuntPercProfit[i]=ProfitI
+  P_DDs$ConpuntPercProfitAdjusted[i]=ProfitIAdjusted
+  EntryMoneyI=EntryMoneyI+ProfitI
+  EntryMoneyIAdjusted=EntryMoneyIAdjusted+ProfitIAdjusted
+}
+P_DDs$CumCounpundProfit= floor(cumsum(P_DDs$ConpuntPercProfit) )
+P_DDs$CumCounpundProfitAdj= floor(cumsum(P_DDs$ConpuntPercProfitAdjusted) )
+
+CounpundProfit=ggplot(data=P_DDs) +
+  geom_line( aes(x=Index, y=CumCounpundProfit, EntryMoneyAdjusted="No"), size=1, color="red") +
+  geom_line( aes(x=Index, y=CumCounpundProfitAdj, EntryMoneyAdjusted="Yes"), size=1, color=rgb(0.2, 0.6, 0.9, 1)) +
+  xlab("Entry number") + ylab("Compound balance (USD)") +theme_bw()
+
+
+CounpundProfitPlot=ggplotly(CounpundProfit)
+
+
+
+
+```
+
+$$\\[.0005in]$$
+ <font size="25"> **Robot_BB_Camilo on XAUUSD** </font>   
+ 
+This bot is a simple demo of an strategy based on bollinger bands. Enter long when price crosses above lower BB band (Len=45 and SD=2.5), the opposite to enter short... exits longs when price cross below the upper band (Len=15,Sd=1.5). Simulation starts with 30000 and each entry is set at 5% of the account balance. Maximum desire DD is set to 5% of the account balance. To ensure that DD, the money to enter is reduced such that DD achives Desire DD.
+
+
+
+$$\\[.0005in]$$
+
+
+
+
+Frequency of dropdowns. Upper bars show the number of entries at any given dropwodwn value when entries were adjusted to the desired DD. Lower bars is for a simulation setting price entry to 5% of the account each time.
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12}
+DDsPlot
+
+```
+
+Balance and DropDown profile as in Tradingview. Red line is the accumulate raw profit, by this we mean the prfile when entrering at 5%o fthe account each time. Blue line is the cummulative profit when money used to enter has been adjusted to keep the DD to the desire level. Bars of DD and profit are for the raw entry price.
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12}
+DDProfitProfile
+
+```
+
+
+Profile of Compound balance. This is the account balance overtime should the account be left to growth in a compounded manner. This means that any subsequent entry uses the capital at the start plus any profit over time. This profile below is approximated given the gain generated by any of the sequential entries of the bot. 
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12}
+CounpundProfitPlot
+
+```
+
+Time profile of a simulation. In red and blue are shown critical entry points, which means times that when entering the strategy would have incurred in a DD above the desired DD. Vertical lines are as follow: grey is the entry position of every signgle signal. dark blue and red is the position of critical entries, this means entries in which the DD excess the desire DD. Light red and blue are good entries (i.e., DD is below desired DD).
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =20}
+Plot
+
+```
+
+  
+
+<details>
+  <summary>Summary</summary>
+```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(Summary)
+```
+</details> 
+
+
+
+
+
+$$\\[.0005in]$$
+  <details>
+  <summary>List of entries</summary>
+```{r, echo=FALSE, eval=TRUE}
+
+knitr::kable(SeqEntries)
+```
+</details> 
+
+
+$$\\[.0005in]$$
+
+
+[AUDCAD](https://camilo-mora.github.io/OptiMoraR/01_AUDCAD.html) 
+[AUDCHF](https://camilo-mora.github.io/OptiMoraR/02_AUDCHF.html)
+[AUDJPY](https://camilo-mora.github.io/OptiMoraR/03_AUDJPY.html)
+[AUDNZD](https://camilo-mora.github.io/OptiMoraR/04_AUDNZD.html) 
+[AUDUSD](https://camilo-mora.github.io/OptiMoraR/05_AUDUSD.html) 
+[CADCHF](https://camilo-mora.github.io/OptiMoraR/06_CADCHF.html) 
+[CHFJPY](https://camilo-mora.github.io/OptiMoraR/07_CHFJPY.html) 
+[EURAUD](https://camilo-mora.github.io/OptiMoraR/08_EURAUD.html) 
+[EURCAD](https://camilo-mora.github.io/OptiMoraR/09_EURCAD.html) 
+[EURCHF](https://camilo-mora.github.io/OptiMoraR/10_EURCHF.html) 
+[EURGBP](https://camilo-mora.github.io/OptiMoraR/11_EURGBP.html) 
+[EURJPY](https://camilo-mora.github.io/OptiMoraR/12_EURJPY.html) 
+[EURNZD](https://camilo-mora.github.io/OptiMoraR/13_EURNZD.html) 
+[EURUSD](https://camilo-mora.github.io/OptiMoraR/14_EURUSD.html) 
+[GBPAUD](https://camilo-mora.github.io/OptiMoraR/15_GBPAUD.html) 
+[GBPCAD](https://camilo-mora.github.io/OptiMoraR/16_GBPCAD.html) 
+[GBPCHF](https://camilo-mora.github.io/OptiMoraR/17_GBPCHF.html) 
+[GBPJPY](https://camilo-mora.github.io/OptiMoraR/18_GBPJPY.html) 
+[GBPNZD](https://camilo-mora.github.io/OptiMoraR/19_GBPNZD.html) 
+[GBPUSD](https://camilo-mora.github.io/OptiMoraR/20_GBPUSD.html) 
+[NZDCAD](https://camilo-mora.github.io/OptiMoraR/21_NZDCAD.html) 
+[NZDCHF](https://camilo-mora.github.io/OptiMoraR/22_NZDCHF.html) 
+[NZDUSD](https://camilo-mora.github.io/OptiMoraR/23_NZDUSD.html) 
+[USDCAD](https://camilo-mora.github.io/OptiMoraR/24_USDCAD.html) 
+[USDCHF](https://camilo-mora.github.io/OptiMoraR/25_USDCHF.html) 
+[USDJPY](https://camilo-mora.github.io/OptiMoraR/26_USDJPY.html) 
+[XAUUSD](https://camilo-mora.github.io/OptiMoraR/27_XAUUSD.html) 
+[ALL](https://camilo-mora.github.io/OptiMoraR/28_ALL.html) 

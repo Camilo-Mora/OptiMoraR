@@ -84,10 +84,18 @@ $$\\[.0005in]$$
 
 $$\\[.0005in]$$
 
-Bots are optimized by having the largest number of successful entries while meeting as criteria that DD does not exceed the desired DD ($ `r MinimumDD`) and the entry capital not larger than 10% nor smaller than $1,000 (The smallest amount possible).
+Bots are optimized by having the largest number of successful entries while meeting as criteria that DD does not exceed the desired DD ($ `r MinimumDD`) and the entry capital not larger than 5% nor smaller than $1,000 (The smallest amount possible).
 
+Basically, starting from a defined set of values for each variable in the bot, we check values above and below for each variable. Those combinations are then filtered to be with the desire DD, from the set of selected combinations, we select the one with  with the largest number of won entries. The variable at that selected value is excluded for the next round, and the procedure is repeated. until the last variable is tested. We call this sequential optimizaion, as each variable is optimized sequentially for improvements in the number of successfull entries, within the desire limits of DD.
 
-Optimized with $30,000 capital, 10% of capital per entry and 10% desired DD.
+After each full optimization many combinations are available, so we run an addtional filter...we call it the 5% rule, basically:
+1. select all combinations within the desire DD (<than 10% of the account)
+2. select combinations on the top 5% with the most won entries.
+3. from the pool above select 5% with the least number of re-entries.
+
+From the set of selected combinations, we run a signal by signal test to ensure all combinations do not exceed the desired DD. 
+
+Optimized with $30,000 capital, 5% of capital per entry and 10% desired DD.
 
 
 
