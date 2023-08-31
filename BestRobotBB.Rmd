@@ -48,7 +48,7 @@ PlotSignals=PlotSignals%>%
   dySeries("Entry_LowerBB", stepPlot = FALSE, fillGraph = FALSE, color = adjustcolor( "green", alpha.f = 0.5))%>%
   dySeries("Exit_UpperBB", stepPlot = FALSE, fillGraph = FALSE, color = adjustcolor( "orange", alpha.f = 0.5))%>%
   dySeries("Exit_LowerBB", stepPlot = FALSE, fillGraph = FALSE, color= adjustcolor( "orange", alpha.f = 0.5))%>%
-  dySeries("c", stepPlot = FALSE, fillGraph = FALSE, color= adjustcolor( "purple", alpha.f = 0.5), strokePattern ="dotted")
+  dySeries("c", stepPlot = FALSE, fillGraph = FALSE, color= "black")
 #data for each signal
 Longs=Signals%>% filter(Entry=="Long")
 Shorts=Signals%>% filter(Entry=="Short")
