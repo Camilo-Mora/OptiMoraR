@@ -1,0 +1,423 @@
+
+---
+title: "Size of impulses and corrections"
+output: html_document
+---
+
+<style>
+.main-container {
+    max-width: 940px;
+    margin-left: 0;
+    margin-right: auto;
+}
+</style>
+
+
+Version: 1.0
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE}
+##This code takes files from the optimoraR optimization and rank them by best results.
+
+library(dplyr)
+library(ggplot2)
+library(plotly)
+library(Stocks)
+library(data.table)
+library(hexbin)
+library(splitstackshape)
+ library(zoo)
+library(tidyr)
+library(knitr)
+library(ggpubr)
+library(dygraphs)
+
+PerCorrection= c(0.05, 0.1, 0.15, 0.2, 0.25)
+CriticalSwing=3 # percent change used to identify critical extensions
+
+#Plots for corrections
+Data=read.csv("D:/Scrips/Trading/ForexPairs2YrsAll.csv")
+
+Data=cbind(ID=1:nrow(Data),Data)
+
+Data=Data %>% filter(TF =="1 min")
+
+
+
+TickersOpt=sort(unique(Data$TickerNam))
+
+Results=data.frame()
+
+for (TickerI in TickersOpt){
+  DataTickerI=Data %>% filter(TickerNam ==TickerI)
+
+  
+  for (CorrectionI in PerCorrection){
+    #Frequency of swing sizes
+  SizeSwins=ZigZag_Frequency.Swings(DataTickerI$c,change=CorrectionI)
+    Feq2=data.frame(Impulse =lag(SizeSwins),Correction=SizeSwins)
+    Feq2=Feq2 %>% filter(Impulse  >=0)
+    Feq2$MinCorrection=CorrectionI
+    Feq2$TickerNam=TickerI
+    Results=rbind(Results,Feq2)
+  }
+  
+}
+
+
+#do zizag frequency hexbin density plots
+for (Ticker in TickersOpt){
+
+StockIData=Results %>% filter(TickerNam ==Ticker)
+
+
+xLim=max(StockIData$Impulse)
+yLim=min(StockIData$Correction)
+
+if( xLim > CriticalSwing) {xLim= c(0, xLim +0.5)} else {xLim= c(0, CriticalSwing +0.5)}
+if( yLim < -CriticalSwing) {yLim= c( yLim -0.5, 0)} else {yLim= c( -CriticalSwing -0.5, 0)}
+
+for (I in 1:length(PerCorrection)){
+  GGPLOT=ggplot((StockIData %>% filter(MinCorrection  ==PerCorrection[I])), aes(x = Impulse , y = Correction )) + geom_hex(show.legend=FALSE ) +  xlim(xLim) + ylim(yLim)+labs(x=PerCorrection[I]) +
+    theme(axis.title.x = element_text(vjust = 2)) + geom_hline(yintercept=-CriticalSwing, linetype="dashed", color = "red",size=0.5)+ geom_vline(xintercept=CriticalSwing, linetype="dashed", color = "red",size=0.5)
+  Name=paste0(Ticker,"_",I)
+  assign(Name,ggplotly(GGPLOT))
+}
+}
+
+
+
+
+    
+```
+
+
+
+These plots show the mimimum price correction at given price extensions... this is like the zig-zag indicator in trdingview, ploting the increases and decreases of certain sizes.
+
+$$\\[.0005in]$$
+
+
+
+# AUDCAD
+
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(AUDCAD_1,AUDCAD_2,AUDCAD_3,AUDCAD_4,AUDCAD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$  
+
+# AUDCHF
+
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(AUDCHF_1,AUDCHF_2,AUDCHF_3,AUDCHF_4,AUDCHF_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$  
+
+
+# AUDJPY
+
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(AUDJPY_1,AUDJPY_2,AUDJPY_3,AUDJPY_4,AUDJPY_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$  
+
+# AUDNZD
+
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(AUDNZD_1,AUDNZD_2,AUDNZD_3,AUDNZD_4,AUDNZD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$  
+
+
+# AUDUSD
+
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(AUDUSD_1,AUDUSD_2,AUDUSD_3,AUDUSD_4,AUDUSD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$    
+
+
+# CADCHF
+
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(CADCHF_1,CADCHF_2,CADCHF_3,CADCHF_4,CADCHF_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+$$\\[.0009in]$$    
+
+
+# CADJPY
+
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(CADCHF_1,CADCHF_2,CADCHF_3,CADCHF_4,CADCHF_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$  
+
+
+# CHFJPY
+
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(CHFJPY_1,CHFJPY_2,CHFJPY_3,CHFJPY_4,CHFJPY_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$  
+
+
+# EURAUD 
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(EURAUD_1,EURAUD_2,EURAUD_3,EURAUD_4,EURAUD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$    
+
+
+# EURCAD 
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(EURCAD_1,EURCAD_2,EURCAD_3,EURCAD_4,EURCAD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$    
+
+
+# EURCHF 
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(EURCHF_1,EURCHF_2,EURCHF_3,EURCHF_4,EURCHF_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$    
+
+
+# EURGBP 
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(EURGBP_1,EURGBP_2,EURGBP_3,EURGBP_4,EURGBP_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$    
+
+
+# EURJPY 
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(EURJPY_1,EURJPY_2,EURJPY_3,EURJPY_4,EURJPY_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$    
+
+
+# EURNZD 
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(EURNZD_1,EURNZD_2,EURNZD_3,EURNZD_4,EURNZD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$    
+
+
+# EURUSD 
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(EURUSD_1,EURUSD_2,EURUSD_3,EURUSD_4,EURUSD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$    
+
+
+# GBPAUD 
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(GBPAUD_1,GBPAUD_2,GBPAUD_3,GBPAUD_4,GBPAUD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$    
+
+
+# GBPCAD 
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(GBPCAD_1,GBPCAD_2,GBPCAD_3,GBPCAD_4,GBPCAD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+
+$$\\[.0009in]$$    
+
+
+# GBPCHF 
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(GBPCHF_1,GBPCHF_2,GBPCHF_3,GBPCHF_4,GBPCHF_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$    
+
+
+# GBPJPY 
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(GBPJPY_1,GBPJPY_2,GBPJPY_3,GBPJPY_4,GBPJPY_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$    
+
+
+# GBPNZD 
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(GBPNZD_1,GBPNZD_2,GBPNZD_3,GBPNZD_4,GBPNZD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$    
+
+
+# GBPUSD 
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(GBPUSD_1,GBPUSD_2,GBPUSD_3,GBPUSD_4,GBPUSD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$    
+
+
+# NZDCAD 
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(NZDCAD_1,NZDCAD_2,NZDCAD_3,NZDCAD_4,NZDCAD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$  
+
+# NZDCHF 
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(NZDCHF_1,NZDCHF_2,NZDCHF_3,NZDCHF_4,NZDCHF_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+        
+$$\\[.0009in]$$  
+
+# NZDJPY 
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(NZDUSD_1,NZDUSD_2,NZDUSD_3,NZDUSD_4,NZDUSD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+
+$$\\[.0009in]$$  
+
+# NZDUSD 
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(NZDUSD_1,NZDUSD_2,NZDUSD_3,NZDUSD_4,NZDUSD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$    
+
+
+# USDCAD 
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(USDCAD_1,USDCAD_2,USDCAD_3,USDCAD_4,USDCAD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$    
+
+
+# USDCHF 
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(USDCHF_1,USDCHF_2,USDCHF_3,USDCHF_4,USDCHF_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$    
+
+
+# USDJPY 
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(USDJPY_1,USDJPY_2,USDJPY_3,USDJPY_4,USDJPY_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$    
+
+
+# XAUUSD
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
+subplot(XAUUSD_1,XAUUSD_2,XAUUSD_3,XAUUSD_4,XAUUSD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+```
+
+    
+$$\\[.0009in]$$    
+
+
+
+[AUDCAD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_AUDCAD.html) 
+[AUDCHF](https://camilo-mora.github.io/OptiMoraR/SwingsNews_AUDCHF.html)
+[AUDJPY](https://camilo-mora.github.io/OptiMoraR/SwingsNews_AUDJPY.html)
+[AUDNZD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_AUDNZD.html) 
+[AUDUSD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_AUDUSD.html) 
+[CADJPY](https://camilo-mora.github.io/OptiMoraR/SwingsNews_CADJPY.html) 
+[CADCHF](https://camilo-mora.github.io/OptiMoraR/SwingsNews_CADCHF.html) 
+[CHFJPY](https://camilo-mora.github.io/OptiMoraR/SwingsNews_CHFJPY.html) 
+[EURAUD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_EURAUD.html) 
+[EURCAD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_EURCAD.html) 
+[EURCHF](https://camilo-mora.github.io/OptiMoraR/SwingsNews_EURCHF.html) 
+[EURGBP](https://camilo-mora.github.io/OptiMoraR/SwingsNews_EURGBP.html) 
+[EURJPY](https://camilo-mora.github.io/OptiMoraR/SwingsNews_EURJPY.html) 
+[EURNZD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_EURNZD.html) 
+[EURUSD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_EURUSD.html) 
+[GBPAUD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_GBPAUD.html) 
+[GBPCAD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_GBPCAD.html) 
+[GBPCHF](https://camilo-mora.github.io/OptiMoraR/SwingsNews_GBPCHF.html) 
+[GBPJPY](https://camilo-mora.github.io/OptiMoraR/SwingsNews_GBPJPY.html) 
+[GBPNZD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_GBPNZD.html) 
+[GBPUSD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_GBPUSD.html) 
+[NZDCAD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_NZDCAD.html) 
+[NZDCHF](https://camilo-mora.github.io/OptiMoraR/SwingsNews_NZDCHF.html) 
+[NZDJPY](https://camilo-mora.github.io/OptiMoraR/SwingsNews_NZDJPY.html) 
+[NZDUSD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_NZDUSD.html) 
+[USDCAD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_USDCAD.html) 
+[USDCHF](https://camilo-mora.github.io/OptiMoraR/SwingsNews_USDCHF.html) 
+[USDJPY](https://camilo-mora.github.io/OptiMoraR/SwingsNews_USDJPY.html) 
+[XAUUSD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_XAUUSD.html) 
+[ALL](https://camilo-mora.github.io/OptiMoraR/SwingsByALLPairs.html) 
