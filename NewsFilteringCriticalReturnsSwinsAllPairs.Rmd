@@ -1,4 +1,20 @@
+---
+title: "Effects of news on price changes"
+output: html_document
+---
+  
+  <style>
+  .main-container {
+    max-width: 940px;
+    margin-left: 0;
+    margin-right: auto;
+  }
+</style>
+  
+  
+  Version: 1.0
 
+```{r, echo=FALSE, message=FALSE,warning=FALSE}
 #Matching critical entries to news
 #library(sqldf)
 library(purrr)
@@ -8,13 +24,17 @@ library(plotly)
 library(Stocks)
 library(zoo)
 
-MinDDWanted=3 #percent of account wanted to be at maximum DD for this pair. 
-ZigZagDDWated=2 #largest etesion in price used for sqing selection...used smaller than the returns DD wated..
+MinDDWanted=2 #percent of account wanted to be at maximum DD for this pair. 
+ZigZagDDWated=1.5 #largest etesion in price used for sqing selection...used smaller than the returns DD wated..
 PerCorrection=0.25 #Percent of correction tested. This is used to calcualte zigzag of this size of large. Basically, times when market extended before having a correction of this size
 
 ForexData=read.csv("D:/Scrips/Trading/ForexPairs2YrsAll.csv")
 
-TickerI="XAUUSD"
+PAIRS= c("AUDCAD", "AUDCHF", "AUDJPY", "AUDNZD", "AUDUSD", "CADCHF", "CADJPY", "CHFJPY", "EURAUD", "EURCAD", "EURCHF" , "EURGBP", "EURJPY", "EURNZD", "EURUSD", "GBPAUD", "GBPCAD", "GBPCHF", "GBPJPY", "GBPNZD", "GBPUSD",  "NZDCAD", "NZDCHF", "NZDJPY","NZDUSD", "USDCAD", "USDCHF", "USDJPY", "XAUUSD")
+
+TickerI="AUDCAD"
+#for (TickerI in PAIRS){
+
 TickerForDat=ForexData %>% filter(TickerNam==TickerI)
 
 DaylyTickerForDat=TickerForDat %>% filter(TF=="1 day")
@@ -191,7 +211,8 @@ fig <- fig %>% layout(
            gridcolor = "rgba(0, 0, 0, 0)",
            showline = T,
            color="black",
-         tickvals = FinalData$Rank, ticktext = FinalData$Eventname),
+         tickvals = FinalData$Rank, ticktext = FinalData$Eventname,
+            tickfont = list(size = 9) ),
          yaxis = list(
            color ="red",
            showline = T,
@@ -355,7 +376,9 @@ fig <- fig %>% layout(
            gridcolor = "rgba(0, 0, 0, 0)",
            showline = T,
            color="black",
-           tickvals = SwinFinalData$Rank, ticktext = SwinFinalData$Eventname),
+           tickvals = SwinFinalData$Rank, 
+           ticktext = SwinFinalData$Eventname,
+           tickfont = list(size = 9)),
          yaxis = list(
            color ="red",
            showline = T,
@@ -367,5 +390,103 @@ fig <- fig %>% layout(
 
 assign(paste0("CriticalSwings_",TickerI),fig)
 
+#}
+
+```
+
+<p align=center>
 
 
+# `r TickerI`
+
+
+Below we show the effect of news releases on `r TickerI`. Shown here is the range of returns shown in the days the announcements were done.
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =10, fig.height = 6}
+
+
+ReturnRangeByNews
+
+
+```
+
+
+Effects on daily returns. Critical returns are defined as days when the price range was larger than ``r MinDDWanted`` % daily.
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =8}
+
+
+get(paste0("CriticalReturns_",TickerI))
+
+
+```
+
+
+
+<details>
+  <summary>Non filtered returns</summary>
+```{r, echo=FALSE, eval=TRUE}
+#do tABLE
+knitr::kable(get(paste0("NonFiltereReturns_",TickerI)))
+
+```
+</details> 
+
+
+Effects on swings. Critical swings are defined as time when price corrections larger than ``r   PerCorrection`` did not occured after price extensions larger than ``r   ZigZagDDWated``. Basically, the price got extended by up to ``r   ZigZagDDWated`` before there was a correction of ``r   PerCorrection``.
+
+
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =8}
+
+
+get(paste0("CriticalSwings_",TickerI))
+
+
+```
+
+
+
+<details>
+  <summary>Non filtered returns</summary>
+```{r, echo=FALSE, eval=TRUE}
+#do tABLE
+knitr::kable(get(paste0("NonFiltereSwings_",TickerI)))
+
+```
+</details> 
+
+</p>
+
+
+
+[AUDCAD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_AUDCAD.html) 
+[AUDCHF](https://camilo-mora.github.io/OptiMoraR/SwingsNews_AUDCHF.html)
+[AUDJPY](https://camilo-mora.github.io/OptiMoraR/SwingsNews_AUDJPY.html)
+[AUDNZD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_AUDNZD.html) 
+[AUDUSD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_AUDUSD.html) 
+[CADJPY](https://camilo-mora.github.io/OptiMoraR/SwingsNews_CADJPY.html) 
+[CADCHF](https://camilo-mora.github.io/OptiMoraR/SwingsNews_CADCHF.html) 
+[CHFJPY](https://camilo-mora.github.io/OptiMoraR/SwingsNews_CHFJPY.html) 
+[EURAUD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_EURAUD.html) 
+[EURCAD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_EURCAD.html) 
+[EURCHF](https://camilo-mora.github.io/OptiMoraR/SwingsNews_EURCHF.html) 
+[EURGBP](https://camilo-mora.github.io/OptiMoraR/SwingsNews_EURGBP.html) 
+[EURJPY](https://camilo-mora.github.io/OptiMoraR/SwingsNews_EURJPY.html) 
+[EURNZD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_EURNZD.html) 
+[EURUSD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_EURUSD.html) 
+[GBPAUD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_GBPAUD.html) 
+[GBPCAD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_GBPCAD.html) 
+[GBPCHF](https://camilo-mora.github.io/OptiMoraR/SwingsNews_GBPCHF.html) 
+[GBPJPY](https://camilo-mora.github.io/OptiMoraR/SwingsNews_GBPJPY.html) 
+[GBPNZD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_GBPNZD.html) 
+[GBPUSD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_GBPUSD.html) 
+[NZDCAD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_NZDCAD.html) 
+[NZDCHF](https://camilo-mora.github.io/OptiMoraR/SwingsNews_NZDCHF.html) 
+[NZDJPY](https://camilo-mora.github.io/OptiMoraR/SwingsNews_NZDJPY.html) 
+[NZDUSD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_NZDUSD.html) 
+[USDCAD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_USDCAD.html) 
+[USDCHF](https://camilo-mora.github.io/OptiMoraR/SwingsNews_USDCHF.html) 
+[USDJPY](https://camilo-mora.github.io/OptiMoraR/SwingsNews_USDJPY.html) 
+[XAUUSD](https://camilo-mora.github.io/OptiMoraR/SwingsNews_XAUUSD.html) 
+[ALL](https://camilo-mora.github.io/OptiMoraR/SwingsByALLPairs.html) 
