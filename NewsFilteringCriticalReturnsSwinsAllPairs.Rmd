@@ -169,7 +169,9 @@ PlotFilteringNews <- function(Ticker, Date,Change,News, CriticalThreshold, YHove
         FinalData=rbind(TotalReturnsFinalData, RestReturnsFinalData)
         FinalData$Rank=1:nrow(FinalData)
         
-        
+        MaxDays=max(FinalData$DaysLeft)
+        FinalData$DaysLeft=(FinalData$DaysLeft/MaxDays)*100
+        Y3Name=paste0("Trading Days Left (in Percent of ",MaxDays, " days")
         #plot relationship bwetween news and retruns
         CriticalRemovalPlot=Stocks::Plot3YAxis(X=FinalData$Rank,
                                       Y1=FinalData$CriticalLeft,
@@ -180,7 +182,7 @@ PlotFilteringNews <- function(Ticker, Date,Change,News, CriticalThreshold, YHove
                                       
                                       Y1AxisName=YAxisName,
                                       Y2AxisName="Maximum DropDown Left",
-                                      Y3AxisName="Days Left for Trading",
+                                      Y3AxisName=Y3Name,
                                       
                                       Y1HoverName =YHover,
                                       Y2HoverName="LeftMaxDD",
