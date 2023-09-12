@@ -31,8 +31,8 @@ library(knitr)
 library(ggpubr)
 library(dygraphs)
 
-PerCorrection= c(0.05, 0.1, 0.15, 0.2, 0.25)
-CriticalSwing=3 # percent change used to identify critical extensions
+PerCorrection= c(0.05, 0.1, 0.15, 0.2, 0.25, 0.5)
+CriticalSwing=2 # percent change used to identify critical extensions
 
 #Plots for corrections
 Data=read.csv("D:/Scrips/Trading/ForexPairs2YrsAll.csv")
@@ -102,7 +102,7 @@ $$\\[.0005in]$$
 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(AUDCAD_1,AUDCAD_2,AUDCAD_3,AUDCAD_4,AUDCAD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(AUDCAD_1,AUDCAD_2,AUDCAD_3,AUDCAD_4,AUDCAD_5,AUDCAD_6, titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
@@ -112,7 +112,7 @@ $$\\[.0009in]$$
 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(AUDCHF_1,AUDCHF_2,AUDCHF_3,AUDCHF_4,AUDCHF_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(AUDCHF_1,AUDCHF_2,AUDCHF_3,AUDCHF_4,AUDCHF_5,AUDCHF_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
@@ -123,7 +123,7 @@ $$\\[.0009in]$$
 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(AUDJPY_1,AUDJPY_2,AUDJPY_3,AUDJPY_4,AUDJPY_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(AUDJPY_1,AUDJPY_2,AUDJPY_3,AUDJPY_4,AUDJPY_5,AUDJPY_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
@@ -133,7 +133,7 @@ $$\\[.0009in]$$
 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(AUDNZD_1,AUDNZD_2,AUDNZD_3,AUDNZD_4,AUDNZD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(AUDNZD_1,AUDNZD_2,AUDNZD_3,AUDNZD_4,AUDNZD_5,AUDNZD_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
@@ -144,7 +144,7 @@ $$\\[.0009in]$$
 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(AUDUSD_1,AUDUSD_2,AUDUSD_3,AUDUSD_4,AUDUSD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(AUDUSD_1,AUDUSD_2,AUDUSD_3,AUDUSD_4,AUDUSD_5,AUDUSD_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
@@ -155,7 +155,7 @@ $$\\[.0009in]$$
 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(CADCHF_1,CADCHF_2,CADCHF_3,CADCHF_4,CADCHF_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(CADCHF_1,CADCHF_2,CADCHF_3,CADCHF_4,CADCHF_5,CADCHF_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
 $$\\[.0009in]$$    
@@ -165,7 +165,7 @@ $$\\[.0009in]$$
 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(CADCHF_1,CADCHF_2,CADCHF_3,CADCHF_4,CADCHF_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(CADJPY_1,CADJPY_2,CADJPY_3,CADJPY_4,CADJPY_5,CADJPY_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
@@ -176,7 +176,7 @@ $$\\[.0009in]$$
 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(CHFJPY_1,CHFJPY_2,CHFJPY_3,CHFJPY_4,CHFJPY_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(CHFJPY_1,CHFJPY_2,CHFJPY_3,CHFJPY_4,CHFJPY_5,CHFJPY_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
@@ -186,7 +186,7 @@ $$\\[.0009in]$$
 # EURAUD 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(EURAUD_1,EURAUD_2,EURAUD_3,EURAUD_4,EURAUD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(EURAUD_1,EURAUD_2,EURAUD_3,EURAUD_4,EURAUD_5,EURAUD_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
@@ -196,7 +196,7 @@ $$\\[.0009in]$$
 # EURCAD 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(EURCAD_1,EURCAD_2,EURCAD_3,EURCAD_4,EURCAD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(EURCAD_1,EURCAD_2,EURCAD_3,EURCAD_4,EURCAD_5,EURCAD_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
@@ -206,7 +206,7 @@ $$\\[.0009in]$$
 # EURCHF 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(EURCHF_1,EURCHF_2,EURCHF_3,EURCHF_4,EURCHF_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(EURCHF_1,EURCHF_2,EURCHF_3,EURCHF_4,EURCHF_5,EURCHF_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
@@ -216,7 +216,7 @@ $$\\[.0009in]$$
 # EURGBP 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(EURGBP_1,EURGBP_2,EURGBP_3,EURGBP_4,EURGBP_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(EURGBP_1,EURGBP_2,EURGBP_3,EURGBP_4,EURGBP_5,EURGBP_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
@@ -226,7 +226,7 @@ $$\\[.0009in]$$
 # EURJPY 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(EURJPY_1,EURJPY_2,EURJPY_3,EURJPY_4,EURJPY_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(EURJPY_1,EURJPY_2,EURJPY_3,EURJPY_4,EURJPY_5,EURJPY_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
@@ -236,7 +236,7 @@ $$\\[.0009in]$$
 # EURNZD 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(EURNZD_1,EURNZD_2,EURNZD_3,EURNZD_4,EURNZD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(EURNZD_1,EURNZD_2,EURNZD_3,EURNZD_4,EURNZD_5,EURNZD_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
@@ -246,7 +246,7 @@ $$\\[.0009in]$$
 # EURUSD 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(EURUSD_1,EURUSD_2,EURUSD_3,EURUSD_4,EURUSD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(EURUSD_1,EURUSD_2,EURUSD_3,EURUSD_4,EURUSD_5,EURUSD_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
@@ -256,7 +256,7 @@ $$\\[.0009in]$$
 # GBPAUD 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(GBPAUD_1,GBPAUD_2,GBPAUD_3,GBPAUD_4,GBPAUD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(GBPAUD_1,GBPAUD_2,GBPAUD_3,GBPAUD_4,GBPAUD_5,GBPAUD_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
@@ -266,7 +266,7 @@ $$\\[.0009in]$$
 # GBPCAD 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(GBPCAD_1,GBPCAD_2,GBPCAD_3,GBPCAD_4,GBPCAD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(GBPCAD_1,GBPCAD_2,GBPCAD_3,GBPCAD_4,GBPCAD_5,GBPCAD_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
 
@@ -276,7 +276,7 @@ $$\\[.0009in]$$
 # GBPCHF 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(GBPCHF_1,GBPCHF_2,GBPCHF_3,GBPCHF_4,GBPCHF_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(GBPCHF_1,GBPCHF_2,GBPCHF_3,GBPCHF_4,GBPCHF_5,GBPCHF_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
@@ -286,7 +286,7 @@ $$\\[.0009in]$$
 # GBPJPY 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(GBPJPY_1,GBPJPY_2,GBPJPY_3,GBPJPY_4,GBPJPY_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(GBPJPY_1,GBPJPY_2,GBPJPY_3,GBPJPY_4,GBPJPY_5,GBPJPY_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
@@ -296,7 +296,7 @@ $$\\[.0009in]$$
 # GBPNZD 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(GBPNZD_1,GBPNZD_2,GBPNZD_3,GBPNZD_4,GBPNZD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(GBPNZD_1,GBPNZD_2,GBPNZD_3,GBPNZD_4,GBPNZD_5,GBPNZD_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
@@ -306,7 +306,7 @@ $$\\[.0009in]$$
 # GBPUSD 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(GBPUSD_1,GBPUSD_2,GBPUSD_3,GBPUSD_4,GBPUSD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(GBPUSD_1,GBPUSD_2,GBPUSD_3,GBPUSD_4,GBPUSD_5,GBPUSD_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
@@ -316,7 +316,7 @@ $$\\[.0009in]$$
 # NZDCAD 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(NZDCAD_1,NZDCAD_2,NZDCAD_3,NZDCAD_4,NZDCAD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(NZDCAD_1,NZDCAD_2,NZDCAD_3,NZDCAD_4,NZDCAD_5,NZDCAD_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
@@ -325,7 +325,7 @@ $$\\[.0009in]$$
 # NZDCHF 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(NZDCHF_1,NZDCHF_2,NZDCHF_3,NZDCHF_4,NZDCHF_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(NZDCHF_1,NZDCHF_2,NZDCHF_3,NZDCHF_4,NZDCHF_5,NZDCHF_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
         
@@ -334,7 +334,7 @@ $$\\[.0009in]$$
 # NZDJPY 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(NZDUSD_1,NZDUSD_2,NZDUSD_3,NZDUSD_4,NZDUSD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(NZDJPY_1,NZDJPY_2,NZDJPY_3,NZDJPY_4,NZDJPY_5,NZDJPY_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
 
@@ -343,7 +343,7 @@ $$\\[.0009in]$$
 # NZDUSD 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(NZDUSD_1,NZDUSD_2,NZDUSD_3,NZDUSD_4,NZDUSD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(NZDUSD_1,NZDUSD_2,NZDUSD_3,NZDUSD_4,NZDUSD_5,NZDUSD_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
@@ -353,7 +353,7 @@ $$\\[.0009in]$$
 # USDCAD 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(USDCAD_1,USDCAD_2,USDCAD_3,USDCAD_4,USDCAD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(USDCAD_1,USDCAD_2,USDCAD_3,USDCAD_4,USDCAD_5,USDCAD_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
@@ -363,7 +363,7 @@ $$\\[.0009in]$$
 # USDCHF 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(USDCHF_1,USDCHF_2,USDCHF_3,USDCHF_4,USDCHF_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(USDCHF_1,USDCHF_2,USDCHF_3,USDCHF_4,USDCHF_5,USDCHF_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
@@ -373,7 +373,7 @@ $$\\[.0009in]$$
 # USDJPY 
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(USDJPY_1,USDJPY_2,USDJPY_3,USDJPY_4,USDJPY_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(USDJPY_1,USDJPY_2,USDJPY_3,USDJPY_4,USDJPY_5,USDJPY_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
@@ -383,7 +383,7 @@ $$\\[.0009in]$$
 # XAUUSD
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =12, fig.height = 3}
-subplot(XAUUSD_1,XAUUSD_2,XAUUSD_3,XAUUSD_4,XAUUSD_5,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
+subplot(XAUUSD_1,XAUUSD_2,XAUUSD_3,XAUUSD_4,XAUUSD_5,XAUUSD_6,titleY = FALSE,   titleX = TRUE, margin = 0.015,nrows =1)
 ```
 
     
