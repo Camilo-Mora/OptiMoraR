@@ -322,7 +322,7 @@ for (TickerX in PAIRS){
   IndividualCriticalSwingsPairI=CriticalSwingsPositions[TickerNam==TickerX, ]
   IndividualCriticalSwingsPairI$SizeSwins=round(IndividualCriticalSwingsPairI$SizeSwins,1)
   if(nrow(IndividualCriticalSwingsPairI)>=1){
-    IndividualCriticalSwingsPairI$Label=paste0(IndividualCriticalSwingsPairI$SizeSwins, "%")
+    IndividualCriticalSwingsPairI$Label=paste0("Zigzag ", IndividualCriticalSwingsPairI$SizeSwins, "%")
   PlotCriticalReturns=PlotCriticalReturns %>% dyEvent(IndividualCriticalSwingsPairI$X, IndividualCriticalSwingsPairI$Label, labelLoc = "bottom",color ="green")
   }
   
