@@ -131,6 +131,8 @@ PlotFilteringNews <- function(Ticker, Date,Change,News, CriticalThreshold, YHove
 
 
 #library(sqldf)
+library(htmltools)
+library(dygraphs)
 library(purrr)
 library(dplyr)
 library(ggplot2)
