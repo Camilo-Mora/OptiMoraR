@@ -144,13 +144,11 @@ PlotFilteringNews <- function(Ticker, Date,Change,News, CriticalThreshold, YHove
          
           CurrencyNameA=substr(Ticker, 1, 3)
           News1=News %>% filter(currency == CurrencyNameA )
-          if(nrow(News1)>=1){News1$event=paste0(CurrencyNameA, News1$event)}
-          
+       
           
           CurrencyNameB=substr(Ticker, 4, 6)
           News2=News %>% filter(currency == CurrencyNameB)
-          if(nrow(News2)>=1){News2$event=paste0(CurrencyNameB, News2$event)}
-          
+        
         
           NewsTickerI=rbind(News1,News2) #Concantenate news from both pairs
 
@@ -371,7 +369,7 @@ for (TickerX in PAIRS){
     ChangeSwings=SubsetSwing$MaxSwin
     
     YName=paste0("Critical Swings Left at ",ZigZagDDWated ,"% in ", TickerX)
-    Swings=PlotFilteringNews (Ticker=TickerX, Date=DateSwings, Change=ChangeSwings,News=News, CriticalThreshold=ZigZagDDWated, YHover="CritSwingsLeft",YAxisName=YName)
+    Swings=PlotFilteringNews (Ticker=TickerX, Date=DateSwings, Change=ChangeSwings,News=NewsSwinReturn, CriticalThreshold=ZigZagDDWated, YHover="CritSwingsLeft",YAxisName=YName)
 
 assign(paste0("ReturnRangeByNews_",TickerX), Plot)
 assign(paste0("CriticalReturns_",TickerX), Returns[[1]])
