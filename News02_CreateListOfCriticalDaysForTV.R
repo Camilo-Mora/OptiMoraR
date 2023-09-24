@@ -46,7 +46,7 @@ Pairs= c("AUDCAD", "AUDCHF", "AUDJPY", "AUDNZD", "AUDUSD", "CADCHF", "CADJPY", "
 ###############################################################################################################################
 
    
-TypeFilter=c("Returns", "Swings")
+TypeFilter=c("RETURNS", "SWINGS")
     
 for (TypeFilterI in TypeFilter){
  
