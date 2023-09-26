@@ -4,7 +4,7 @@ library(data.table)
 library(lubridate)
 
 setwd("D:/Scrips/Trading/seed_camilo_mora_newshistorical/data/")
-ForexTimeLine=data.frame(Date=seq(ymd('2021-01-01'),ymd('2023-09-01'), by = '1 day'))
+ForexTimeLine=data.frame(Date=seq(ymd('2021-01-01'),ymd('2023-09-23'), by = '1 day'))
 Pairs= c("AUDCAD", "AUDCHF", "AUDJPY", "AUDNZD", "AUDUSD", "CADCHF", "CADJPY", "CHFJPY", "EURAUD", "EURCAD", "EURCHF" , "EURGBP", "EURJPY", "EURNZD", "EURUSD", "GBPAUD", "GBPCAD", "GBPCHF", "GBPJPY", "GBPNZD", "GBPUSD",  "NZDCAD", "NZDCHF", "NZDJPY","NZDUSD", "USDCAD", "USDCHF", "USDJPY", "XAUUSD")
 
 
@@ -50,8 +50,8 @@ TypeFilter=c("RETURNS", "SWINGS")
     
 for (TypeFilterI in TypeFilter){
  
-  if(TypeFilterI=="Swings")    {CritNews=read.csv("D:/Scrips/Trading/OptiMoraR/News01_CriticalNews_ListByPair_SwingsOnly.csv")}
-  if(TypeFilterI=="Returns")   {CritNews=read.csv("D:/Scrips/Trading/OptiMoraR/News01_CriticalNews_ListByPair_ReturnsAndSwing.csv")}
+  if(TypeFilterI=="SWINGS")    {CritNews=read.csv("D:/Scrips/Trading/OptiMoraR/News01_CriticalNews_ListByPair_SwingsOnly.csv")}
+  if(TypeFilterI=="RETURNS")   {CritNews=read.csv("D:/Scrips/Trading/OptiMoraR/News01_CriticalNews_ListByPair_ReturnsAndSwing.csv")}
   
 for (PairI in Pairs){
 
