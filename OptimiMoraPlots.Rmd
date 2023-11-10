@@ -35,7 +35,7 @@ for (FileIinBot in FilesPriorBot$FileName){
   BotName=sub(".csv", "", FileIinBot)
   ResultOptimizationI= read.csv(paste0(FilePath,"/",FileIinBot)) 
   ResultOptimizationI$BotName=BotName
-  ResultOptimizationI=ResultOptimizationI %>%  filter(MaxDDMoney  < MinimumDD)
+#  ResultOptimizationI=ResultOptimizationI %>%  filter(MaxDDMoney  < MinimumDD)
   Optimizations=rbind(Optimizations,ResultOptimizationI)
 }
 
@@ -133,7 +133,7 @@ $$\\[.0005in]$$
 # AUDCHF
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 AUDCHF
 
 ```
@@ -143,7 +143,7 @@ AUDCHF
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_AUDCHF)
 ```
@@ -158,7 +158,7 @@ knitr::kable(Data_AUDCHF)
 # AUDJPY
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 AUDJPY
 
 ```
@@ -168,7 +168,7 @@ AUDJPY
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_AUDJPY)
 ```
@@ -183,7 +183,7 @@ knitr::kable(Data_AUDJPY)
 # AUDNZD
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 AUDNZD
 
 ```
@@ -193,7 +193,7 @@ AUDNZD
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_AUDNZD)
 ```
@@ -208,7 +208,7 @@ knitr::kable(Data_AUDNZD)
 # AUDUSD
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 AUDUSD
 
 ```
@@ -218,7 +218,7 @@ AUDUSD
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_AUDUSD)
 ```
@@ -233,7 +233,7 @@ knitr::kable(Data_AUDUSD)
 # CADCHF
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 CADCHF
 
 ```
@@ -243,7 +243,7 @@ CADCHF
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_CADCHF)
 ```
@@ -258,7 +258,7 @@ knitr::kable(Data_CADCHF)
 # CHFJPY
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 CHFJPY
 
 ```
@@ -268,7 +268,7 @@ CHFJPY
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_CHFJPY)
 ```
@@ -283,7 +283,7 @@ knitr::kable(Data_CHFJPY)
 # EURAUD
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 EURAUD
 
 ```
@@ -293,7 +293,7 @@ EURAUD
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_EURAUD)
 ```
@@ -308,7 +308,7 @@ knitr::kable(Data_EURAUD)
 # EURCAD
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 EURCAD
 
 ```
@@ -318,7 +318,7 @@ EURCAD
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_EURCAD)
 ```
@@ -333,7 +333,7 @@ knitr::kable(Data_EURCAD)
 # EURCHF
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 EURCHF
 
 ```
@@ -343,7 +343,7 @@ EURCHF
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_EURCHF)
 ```
@@ -358,7 +358,7 @@ knitr::kable(Data_EURCHF)
 # EURGBP
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 EURGBP
 
 ```
@@ -368,7 +368,7 @@ EURGBP
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_EURGBP)
 ```
@@ -383,7 +383,7 @@ knitr::kable(Data_EURGBP)
 # EURJPY
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 EURJPY
 
 ```
@@ -393,7 +393,7 @@ EURJPY
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_EURJPY)
 ```
@@ -408,7 +408,7 @@ knitr::kable(Data_EURJPY)
 # EURNZD
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 EURNZD
 
 ```
@@ -418,7 +418,7 @@ EURNZD
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_EURNZD)
 ```
@@ -433,7 +433,7 @@ knitr::kable(Data_EURNZD)
 # EURUSD
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 EURUSD
 
 ```
@@ -443,7 +443,7 @@ EURUSD
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_EURUSD)
 ```
@@ -458,7 +458,7 @@ knitr::kable(Data_EURUSD)
 # GBPAUD
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 GBPAUD
 
 ```
@@ -468,7 +468,7 @@ GBPAUD
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_GBPAUD)
 ```
@@ -483,7 +483,7 @@ knitr::kable(Data_GBPAUD)
 # GBPCAD
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 GBPCAD
 
 ```
@@ -493,7 +493,7 @@ GBPCAD
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_GBPCAD)
 ```
@@ -508,7 +508,7 @@ knitr::kable(Data_GBPCAD)
 # GBPCHF
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 GBPCHF
 
 ```
@@ -518,7 +518,7 @@ GBPCHF
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_GBPCHF)
 ```
@@ -533,7 +533,7 @@ knitr::kable(Data_GBPCHF)
 # GBPJPY
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 GBPJPY
 
 ```
@@ -543,7 +543,7 @@ GBPJPY
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_GBPJPY)
 ```
@@ -558,7 +558,7 @@ knitr::kable(Data_GBPJPY)
 # GBPNZD
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 GBPNZD
 
 ```
@@ -568,7 +568,7 @@ GBPNZD
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_GBPNZD)
 ```
@@ -583,7 +583,7 @@ knitr::kable(Data_GBPNZD)
 # GBPUSD
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 GBPUSD
 
 ```
@@ -593,7 +593,7 @@ GBPUSD
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_GBPUSD)
 ```
@@ -608,7 +608,7 @@ knitr::kable(Data_GBPUSD)
 # NZDCAD
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 NZDCAD
 
 ```
@@ -618,7 +618,7 @@ NZDCAD
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_NZDCAD)
 ```
@@ -633,7 +633,7 @@ knitr::kable(Data_NZDCAD)
 # NZDCHF
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 NZDCHF
 
 ```
@@ -643,7 +643,7 @@ NZDCHF
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_NZDCHF)
 ```
@@ -658,7 +658,7 @@ knitr::kable(Data_NZDCHF)
 # NZDUSD
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 NZDUSD
 
 ```
@@ -668,7 +668,7 @@ NZDUSD
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_NZDUSD)
 ```
@@ -683,7 +683,7 @@ knitr::kable(Data_NZDUSD)
 # USDCAD
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 USDCAD
 
 ```
@@ -693,7 +693,7 @@ USDCAD
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_USDCAD)
 ```
@@ -708,7 +708,7 @@ knitr::kable(Data_USDCAD)
 # USDCHF
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 USDCHF
 
 ```
@@ -718,7 +718,7 @@ USDCHF
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_USDCHF)
 ```
@@ -733,7 +733,7 @@ knitr::kable(Data_USDCHF)
 # USDJPY
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 USDJPY
 
 ```
@@ -743,7 +743,7 @@ USDJPY
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_USDJPY)
 ```
@@ -758,7 +758,7 @@ knitr::kable(Data_USDJPY)
 # XAUUSD
   
   
-  ```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, fig.align = 'center', fig.width =9}
 XAUUSD
 
 ```
@@ -768,7 +768,7 @@ XAUUSD
 
 <details>
   <summary>Parameters</summary>
-  ```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=TRUE}
 
 knitr::kable(Data_XAUUSD)
 ```
